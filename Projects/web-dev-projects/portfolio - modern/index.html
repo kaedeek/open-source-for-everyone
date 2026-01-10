@@ -729,112 +729,133 @@
         </div>
     </section>
 
-    <script>
-        // Generate Starfield
-        function generateStars() {
-            const starfield = document.getElementById('starfield');
-            starfield.innerHTML = '';
-            
-            for (let i = 0; i < 150; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                const size = Math.random();
-                if (size < 0.6) {
-                    star.classList.add('small');
-                } else if (size < 0.85) {
-                    star.classList.add('medium');
-                } else {
-                    star.classList.add('large');
-                }
-                
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                star.style.left = x + '%';
-                star.style.top = y + '%';
-                
-                if (Math.random() > 0.5) {
-                    star.classList.add('twinkling');
-                    star.style.animationDelay = Math.random() * 3 + 's';
-                }
-                
-                if (Math.random() > 0.7) {
-                    star.classList.add('floating');
-                    star.style.animationDelay = Math.random() * 6 + 's';
-                }
-                
-                starfield.appendChild(star);
+<script>
+    let shootingStarInterval = null;
+
+    // Generate Starfield (RUN ONCE)
+    function generateStars() {
+        const starfield = document.getElementById('starfield');
+        starfield.innerHTML = '';
+
+        const STAR_COUNT = 100; // reduced from 150 (performance)
+
+        for (let i = 0; i < STAR_COUNT; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+
+            const size = Math.random();
+            if (size < 0.6) star.classList.add('small');
+            else if (size < 0.85) star.classList.add('medium');
+            else star.classList.add('large');
+
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+
+            if (Math.random() > 0.6) {
+                star.classList.add('twinkling');
+                star.style.animationDelay = Math.random() * 3 + 's';
             }
-            
-            // Shooting stars
-            setInterval(() => {
-                const shootingStar = document.createElement('div');
-                shootingStar.className = 'shooting-star';
-                shootingStar.style.left = Math.random() * 100 + '%';
-                shootingStar.style.top = Math.random() * 50 + '%';
-                starfield.appendChild(shootingStar);
-                
-                setTimeout(() => shootingStar.remove(), 3000);
-            }, 4000);
+
+            starfield.appendChild(star);
         }
 
-        // Typing Effect
-        function typeWriter(text, speed = 100) {
-            const element = document.getElementById('typing');
-            let index = 0;
-            element.innerHTML = '';
-            
-            function type() {
-                if (index < text.length) {
-                    element.innerHTML += text[index];
-                    index++;
-                    setTimeout(type, speed);
-                } else {
+        startShootingStars();
+    }
+
+    // Shooting stars (CONTROLLED interval)
+    function startShootingStars() {
+        if (shootingStarInterval) return;
+
+        const starfield = document.getElementById('starfield');
+
+        shootingStarInterval = setInterval(() => {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            shootingStar.style.left = Math.random() * 100 + '%';
+            shootingStar.style.top = Math.random() * 50 + '%';
+
+            starfield.appendChild(shootingStar);
+
+            setTimeout(() => shootingStar.remove(), 3000);
+        }, 6000); // slower = less load
+    }
+
+    // Stop animations when tab not visible
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && shootingStarInterval) {
+            clearInterval(shootingStarInterval);
+            shootingStarInterval = null;
+        } else if (!document.hidden) {
+            startShootingStars();
+        }
+    });
+
+    // Typing Effect (LIMITED cycles)
+    function typeWriter(text, speed = 80, maxCycles = 2) {
+        const element = document.getElementById('typing');
+        let index = 0;
+        let cycles = 0;
+        element.textContent = '';
+
+        function type() {
+            if (index < text.length) {
+                element.textContent += text[index++];
+                setTimeout(type, speed);
+            } else {
+                cycles++;
+                if (cycles < maxCycles) {
                     setTimeout(() => {
-                        element.innerHTML = '';
+                        element.textContent = '';
                         index = 0;
-                        setTimeout(type, 500);
-                    }, 2000);
+                        type();
+                    }, 1500);
                 }
             }
-            type();
         }
+        type();
+    }
 
-        // Scroll animations
-        function observeElements() {
-            const options = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
+    // Scroll animations (unchanged, efficient)
+    function observeElements() {
+        const observer = new IntersectionObserver(
+            entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // IMPORTANT cleanup
                     }
                 });
-            }, options);
+            },
+            { threshold: 0.1 }
+        );
 
-            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-        }
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
+    // Smooth scroll (unchanged)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            target?.scrollIntoView({ behavior: 'smooth' });
         });
+    });
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            generateStars();
-            typeWriter('🏆 Oracle Certified Gen AI Pro | ☁️ AWS Architect | 🤖 ML Enthusiast', 80);
-            observeElements();
-        });
-    </script>
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+        generateStars();
+        typeWriter(
+            '🏆 Oracle Certified Gen AI Pro | ☁️ AWS Architect | 🤖 ML Enthusiast',
+            80
+        );
+        observeElements();
+    });
+
+    // Cleanup on unload (VERY IMPORTANT)
+    window.addEventListener('beforeunload', () => {
+        if (shootingStarInterval) clearInterval(shootingStarInterval);
+    });
+</script>
+
 </body>
 </html>
