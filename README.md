@@ -14,7 +14,6 @@ Welcome to your first step in open source!
 - Ask questions or request help anytime – we’re here to support you!
 
 
-
 ## 📝 Add Your Name as a Contributor
 
 We love recognizing everyone who contributes! After your pull request is merged, please add your **name**, **GitHub profile link**, and optionally a short **bio** or your area of interest to the `CONTRIBUTORS.md` file in the root directory. This helps build our welcoming community and showcases your contribution.
@@ -28,8 +27,6 @@ If you need help with this, feel free to ask!
 - `/projects` — Projects open for contributions  
 - `README.md` — This welcome and guide file  
 - `CONTRIBUTORS.md` — List of contributors
-
-
 
 
 ## 🙌 Why Contribute?
