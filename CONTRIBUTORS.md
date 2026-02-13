@@ -13,6 +13,7 @@ Add your **name** and **GitHub profile link** here after your contribution is me
 ### Contributors
 
 - [Vijay Rajesh R](https://github.com/vijayrajeshr) – 😊 excited about open source!
+- [Divyanshu Kumar](https://github.com/Divyanshu0902) - Web Dev, interested in Web3 and AIML Technologies.
 - [Aman](https://github.com/amanhsen) – learning and contributing, one pull request at a time 🚀
 - [Samuel Cuerrier](https://github.com/samuelcuerrier01) - trying to get my first few pulls im from Canada
 - [Nishanth S V](https://github.com/nishanth815) – 😊 excited about open source!
