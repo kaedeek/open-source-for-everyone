@@ -22,4 +22,5 @@ Add your **name** and **GitHub profile link** here after your contribution is me
 - [CelestialSage0](https://github.com/CelestialSage0) - 😊 excited about open source!
 - [Rashmi Priya] (https://github.com/rashmip2102) - 2 day streak with GitHub, hopefully I will learn more 😊  
 - [Riddhesh Randive](https://github.com/Riddhesh739) - CS student @COEP, learning and growing.
+- [Nishanth B S](https://github.com/NishanthBS-Code) - A passionate Web Dev who is eager to learn, innovate and contribute.
 
